@@ -325,6 +325,7 @@ export const logger = {
 
 ## Related Docs
 
+- [user-messaging.md](../_guides/user-messaging.md) - Copy system, Svelte Sonner, Sentry
 - [backend-ash.md](../_guides/backend-ash.md) - Ash patterns
 - [auth.md](./auth.md) - Auth errors
 

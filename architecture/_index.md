@@ -75,7 +75,10 @@
 | sync | [offline](_patterns/offline.md) | Sync on reconnect |
 | tab bar | [navigation](_patterns/navigation.md) | Bottom tab bar |
 | test | [testing](_patterns/testing.md) | All |
-| toast | [errors](_patterns/errors.md) | Flash messages |
+| toast | [user-messaging](_guides/user-messaging.md) | Toast bridge |
+| Sentry | [user-messaging](_guides/user-messaging.md) | Sentry integration |
+| copy | [user-messaging](_guides/user-messaging.md) | Copy system |
+| user messaging | [user-messaging](_guides/user-messaging.md) | All |
 | touch target | [mobile-ux](_guides/mobile-ux.md) | Touch targets |
 | transition | [animations](_guides/animations.md) | All |
 | typing indicator | [backend-ash](_guides/backend-ash.md) | Typing indicators |
@@ -94,6 +97,10 @@
 ### Forms
 - [forms.md](_patterns/forms.md) - Form patterns
 - [errors.md](_patterns/errors.md) - Error display
+
+### User Messaging & Errors
+- [user-messaging.md](_guides/user-messaging.md) - Toast, copy, Sentry
+- [errors.md](_patterns/errors.md) - Error handling pattern
 
 ### Mobile/PWA
 - [mobile-ux.md](_guides/mobile-ux.md) - All mobile patterns
