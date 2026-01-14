@@ -310,6 +310,74 @@ function addToQueue(type, payload) {
 
 ---
 
+## Assuming Native Parity
+
+**Don't**: Assume PWA can do everything native apps can.
+
+**Do**: Check platform capability matrix before designing features.
+
+| API | Android | iOS | Common Mistake |
+|-----|---------|-----|----------------|
+| Background Sync | Yes | No | Expecting auto-sync on iOS |
+| Background Fetch | Yes | No | Expecting uploads to continue when backgrounded on iOS |
+| Vibration | Yes | No | Using haptic feedback without visual fallback |
+| Background audio | Yes | Pauses | Expecting music to continue when locked on iOS |
+| Service Worker (bg) | Continues | Stops in seconds | Assuming background processing works on iOS |
+| Contact Picker | Yes | No | Building contact selection without fallback |
+| File System Access | Yes | No | Direct file system access on iOS |
+
+### iOS Reality Check
+
+```typescript
+// WRONG - Assuming background upload works
+async function uploadVideo(file: File) {
+  await fetch('/upload', { method: 'POST', body: file });
+  // User switches apps → iOS kills this
+}
+
+// CORRECT - Platform-aware with resume capability
+async function uploadVideo(file: File) {
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+  // Chunk the file for resumability
+  const chunks = chunkFile(file, CHUNK_SIZE);
+
+  for (const [index, chunk] of chunks.entries()) {
+    // Save progress before each chunk
+    saveProgress(file.name, index);
+
+    await uploadChunk(chunk, index);
+  }
+
+  // Show platform-appropriate messaging
+  if (isIOS) {
+    showToast('Keep app open while uploading');
+  }
+}
+```
+
+### Haptic Feedback
+
+```typescript
+// WRONG - Assumes vibration exists
+navigator.vibrate(100);
+
+// CORRECT - Check before using
+function haptic(pattern: 'light' | 'medium' | 'heavy') {
+  if ('vibrate' in navigator) {
+    const durations = { light: 10, medium: 25, heavy: 50 };
+    navigator.vibrate(durations[pattern]);
+  }
+  // Visual feedback works on all platforms (backup)
+}
+```
+
+### Reference
+
+See `_patterns/native-mobile.md` for complete platform capability matrix and implementation patterns.
+
+---
+
 ## Checklist
 
 - [ ] Works offline (at least shows cached content)
@@ -327,4 +395,5 @@ function addToQueue(type, payload) {
 
 - [mobile-ux.md](../_guides/mobile-ux.md) - Correct mobile patterns
 - [offline.md](../_patterns/offline.md) - Offline patterns
+- [native-mobile.md](../_patterns/native-mobile.md) - Platform capability matrix and native-like patterns
 

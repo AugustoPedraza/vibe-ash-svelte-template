@@ -36,6 +36,23 @@
 
 ---
 
+## Native-Like Behavior
+
+For platform-specific native behavior (camera, uploads, background processing, haptics), see the comprehensive pattern catalog:
+
+📄 **[native-mobile.md](../_patterns/native-mobile.md)** - Complete platform capability matrix and implementation patterns
+
+This includes:
+- Platform capability matrix (what works on iOS vs Android)
+- Media capture (camera, microphone)
+- File upload with resume capability
+- Draft persistence patterns
+- Push notification architecture
+- Haptic feedback (including iOS workarounds)
+- When to consider Capacitor
+
+---
+
 ## Performance Budgets
 
 | Metric | Target | Measure With |
@@ -610,4 +627,6 @@ export const offlineQueue = createOfflineQueue();
 
 - [animations.md](./animations.md) - Motion patterns
 - [frontend-svelte.md](./frontend-svelte.md) - Component patterns
+- [native-mobile.md](../_patterns/native-mobile.md) - Platform capability matrix and native-like patterns
+- [pwa.md](../_anti-patterns/pwa.md) - PWA anti-patterns to avoid
 
