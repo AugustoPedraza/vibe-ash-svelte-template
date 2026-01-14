@@ -16,6 +16,7 @@
 | Header pattern | [#header-patterns](#header-patterns) |
 | Footer pattern | [#footer-patterns](#footer-patterns) |
 | Screen flow | [#screen-flows](#screen-flows) |
+| **Desktop layouts** | [#desktop-wireframes](#desktop-wireframes) |
 
 **Complements:**
 - [ux-design-philosophy.md](./ux-design-philosophy.md) - WHY behind decisions
@@ -621,6 +622,191 @@ Initial                Search Active         Results
 
 ---
 
+## Desktop Wireframes
+
+Desktop layouts expand on mobile patterns while maintaining consistency.
+
+> For detailed desktop patterns, see [desktop-ux.md](./desktop-ux.md) and [adaptive-layouts.md](../_patterns/adaptive-layouts.md).
+
+### Window Size Classes
+
+| Class | Width | Layout Strategy | Navigation |
+|-------|-------|-----------------|------------|
+| **Compact** | 0-599px | Single column | Bottom tabs |
+| **Medium** | 600-839px | Optional split | Nav rail or sidebar |
+| **Expanded** | 840-1023px | Split-pane | Sidebar |
+| **Large** | 1024px+ | Constrained width | Sidebar |
+
+### Desktop App Shell
+
+```
++--------+---------------------------------------------------+
+| Logo   |  Page Title                   [Actions] [User]    |  <- Desktop header (h-14)
++--------+---------------------------------------------------+
+|        |                                                   |
+| Home   |                                                   |
+| Proj   |            Main Content Area                      |
+| Inbox  |            (max-width: 1024px)                    |
+| Team   |            centered                               |
+|        |                                                   |
+|--------|                                                   |
+| Sett.  |                                                   |
+| Help   |                                                   |
+|        |                                                   |
+| [User] |                                                   |
++--------+---------------------------------------------------+
+  280px                    remaining
+```
+
+### Desktop List-Detail (Split-Pane)
+
+```
++--------+--------------------+-----------------------------+
+| Logo   |  Projects                     [Search] [+New]    |
++--------+--------------------+-----------------------------+
+|        | [Search...]        |                             |
+| Home   | [All] [Active]     |                             |
+| Proj * |--------------------+       Project Alpha         |
+| Inbox  | > Project Alpha  * |       ================      |
+| Team   | > Project Beta     |                             |
+|        |   Project Gamma    |   Status: Active            |
+|--------|   Project Delta    |   Due: Jan 20               |
+| Sett.  |                    |                             |
+| Help   |                    |   Description text...       |
+|        |                    |                             |
+| [User] |                    |   [Edit] [Archive]          |
++--------+--------------------+-----------------------------+
+  280px       ~380px                  remaining
+```
+
+**Key behaviors:**
+- List panel has fixed width (~380px)
+- Detail panel fills remaining space
+- Selected item highlighted in list
+- No selection shows "Select an item" empty state
+
+### Desktop Centered Form
+
+```
++--------+---------------------------------------------------+
+| Logo   |  Create Project                                   |
++--------+---------------------------------------------------+
+|        |                                                   |
+| Home   |            +---------------------------+          |
+| Proj   |            |                           |          |
+| Inbox  |            |  Project Name *           |          |
+| Team   |            |  [                      ] |          |
+|        |            |                           |          |
+|--------|            |  Description              |          |
+| Sett.  |            |  [                      ] |          |
+| Help   |            |  [                      ] |          |
+|        |            |                           |          |
+| [User] |            |   [Cancel]    [Create]    |          |
++--------+            +---------------------------+          |
+                            max-width: 640px
+```
+
+**Key behaviors:**
+- Form card centered in content area
+- Max-width 640px for readability
+- Single column form fields
+- Actions inside card or sticky footer
+
+### Desktop Dashboard (Grid)
+
+```
++--------+---------------------------------------------------+
+| Logo   |  Dashboard                                        |
++--------+---------------------------------------------------+
+|        |                                                   |
+| Home * |  +------------+  +------------+  +------------+   |
+| Proj   |  | Metric 1   |  | Metric 2   |  | Metric 3   |   |
+| Inbox  |  | 1,234      |  | 567        |  | 89%        |   |
+| Team   |  +------------+  +------------+  +------------+   |
+|        |                                                   |
+|--------|  +---------------------------+  +-------------+   |
+| Sett.  |  |                           |  |             |   |
+| Help   |  |  Recent Activity          |  | Quick       |   |
+|        |  |  - Activity 1             |  | Actions     |   |
+| [User] |  |  - Activity 2             |  | [+Create]   |   |
++--------+  +---------------------------+  +-------------+   |
+```
+
+**Grid columns by viewport:**
+
+| Viewport | Columns |
+|----------|---------|
+| Compact | 1 |
+| Medium | 2 |
+| Expanded | 3 |
+| Large | 3-4 |
+
+### Desktop Settings (Split-Pane)
+
+```
++--------+--------------------+-----------------------------+
+| Logo   |  Settings                                        |
++--------+--------------------+-----------------------------+
+|        |                    |                             |
+| Home   | General            | Profile                     |
+| Proj   | > Profile        * | ─────────────────────       |
+| Inbox  |   Notifications    |                             |
+| Team   |   Privacy          | Display Name                |
+|        |                    | [John Doe.............]     |
+|--------|   Appearance       |                             |
+| Sett.* |                    | Email                       |
+| Help   | Account            | [john@example.com.....]     |
+|        |   Security         |                             |
+| [User] |   Billing          |     [Cancel]  [Save]        |
++--------+--------------------+-----------------------------+
+```
+
+### Modal on Desktop
+
+**Mobile (Bottom Sheet):**
+```
++----------------------------------------+
+|             [Backdrop]                 |
+|                                        |
+|+--------------------------------------+|
+||  Modal Title               [X]       ||
+|+--------------------------------------+|
+||                                      ||
+||  Modal content here                  ||
+||                                      ||
+|+--------------------------------------+|
+```
+
+**Desktop (Centered Dialog):**
+```
++--------------------------------------------------+
+|                   [Backdrop]                      |
+|                                                   |
+|         +------------------------------+          |
+|         |  Modal Title           [X]   |          |
+|         +------------------------------+          |
+|         |                              |          |
+|         |  Modal content here          |          |
+|         |                              |          |
+|         +------------------------------+          |
+|         |       [Cancel] [Confirm]     |          |
+|         +------------------------------+          |
+|                                                   |
++--------------------------------------------------+
+```
+
+### Navigation Transformation Summary
+
+| Mobile | Desktop |
+|--------|---------|
+| `BottomTabBar` | `Sidebar` |
+| `AppHeader` | `DesktopHeader` |
+| `BottomSheet` (menu) | `Dropdown` |
+| `BottomSheet` (form) | Centered `Modal` |
+| Navigate to detail | Show in split-pane |
+
+---
+
 ## Spacing and Rhythm
 
 ### Base Unit: 8px Grid
@@ -816,5 +1002,7 @@ Light Mode:                  Dark Mode:
 
 - [ux-design-philosophy.md](./ux-design-philosophy.md) - WHY behind decisions
 - [component-intent.md](./component-intent.md) - Component selection
-- [mobile-ux.md](./mobile-ux.md) - Implementation patterns
+- [mobile-ux.md](./mobile-ux.md) - Mobile implementation patterns
+- [desktop-ux.md](./desktop-ux.md) - Desktop patterns and layouts
+- [adaptive-layouts.md](../_patterns/adaptive-layouts.md) - Layout transformations
 - [animations.md](./animations.md) - Motion patterns

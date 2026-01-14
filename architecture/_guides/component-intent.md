@@ -17,6 +17,7 @@
 | Collect input | [#input-components](#input-components) |
 | Show overlays | [#overlay-components](#overlay-components) |
 | Handle states | [#state-components](#state-components) |
+| **Desktop decisions** | [#mobile-vs-desktop-decisions](#mobile-vs-desktop-decisions) |
 
 **Complements:**
 - [ux-design-philosophy.md](./ux-design-philosophy.md) - WHY behind decisions
@@ -599,16 +600,45 @@ Showing loading or empty state...
 
 ### Mobile vs Desktop Decisions
 
-| Scenario | Desktop | Mobile |
-|----------|---------|--------|
-| Action menu | Dropdown | BottomSheet |
-| Multi-select | Multi-select dropdown | BottomSheet + checkboxes |
-| Date picker | Calendar popup | Native date input / BottomSheet |
-| Long form | Single page | Multi-step with progress |
-| Context menu | Right-click | Long-press + BottomSheet |
-| Tooltip | Hover | Tap to reveal OR omit |
-| Sidebar | Visible sidebar | BottomTabBar + drawer |
-| Data table | Table with columns | Cards or list view |
+> For comprehensive desktop patterns, see [desktop-ux.md](./desktop-ux.md).
+
+| User Intent | Mobile (Compact) | Desktop (Expanded+) |
+|-------------|------------------|---------------------|
+| Primary navigation | `BottomTabBar` | `Sidebar` |
+| Secondary navigation | `AppHeader` actions | `DesktopHeader` actions |
+| Action menu | `BottomSheet` | `Dropdown` |
+| Multi-select | `BottomSheet` + checkboxes | `BottomSheet` or dialog |
+| Form input | Full-width | Centered (max 640px) |
+| List browsing | Single column | Split-pane or grid |
+| View detail | Navigate to page | Show in split-pane |
+| Modal content | Bottom sheet (slide up) | Centered dialog (scale in) |
+| Quick menu | `BottomSheet` | `Dropdown` |
+| Date picker | Native date input | Calendar popup |
+| Long form | Multi-step with progress | Single page (if fits) |
+| Context menu | Long-press + `BottomSheet` | Right-click + `Dropdown` |
+| Tooltip | Tap to reveal OR omit | Hover |
+| Data table | Cards or list view | Table with columns |
+| Settings | Grouped list | Split-pane (categories left) |
+| Dashboard | Stacked cards | Responsive grid (3-4 cols) |
+
+### Desktop Layout Decisions
+
+| Screen Type | Use Split-Pane? | Content Width |
+|-------------|-----------------|---------------|
+| Lists (inbox, projects) | Yes | Full + detail panel |
+| Settings | Yes | Categories left, form right |
+| Forms (create, edit) | No | Centered (640px max) |
+| Dashboard | No | Full (1024px max), use grid |
+| Detail view | Context-dependent | Centered or in split |
+
+### Breakpoint Behavior
+
+| Viewport | Navigation | Layout | Modal Style |
+|----------|------------|--------|-------------|
+| Compact (<600px) | BottomTabBar | Single column | Bottom sheet |
+| Medium (600-839px) | Sidebar | Optional split | Bottom or center |
+| Expanded (840px+) | Sidebar | Split-pane active | Centered dialog |
+| Large (1024px+) | Sidebar | Max-width constrained | Centered dialog |
 
 ---
 
@@ -616,5 +646,7 @@ Showing loading or empty state...
 
 - [ux-design-philosophy.md](./ux-design-philosophy.md) - WHY behind decisions
 - [wireframe-patterns.md](./wireframe-patterns.md) - Screen templates
-- [mobile-ux.md](./mobile-ux.md) - Implementation patterns
+- [mobile-ux.md](./mobile-ux.md) - Mobile implementation patterns
+- [desktop-ux.md](./desktop-ux.md) - Desktop patterns and layouts
+- [adaptive-layouts.md](../_patterns/adaptive-layouts.md) - Layout transformations
 - [frontend-svelte.md](./frontend-svelte.md) - Component implementation
