@@ -11,6 +11,7 @@
 | LiveView gates | [#liveview-auth-gates](#liveview-auth-gates) | 2 min |
 | Password handling | [#password-handling](#password-handling) | 2 min |
 | Login flow | [#login-flow](#login-flow) | 3 min |
+| **PWA sessions** | [#pwa-session-management](#pwa-session-management) | 5 min |
 
 ---
 
@@ -375,8 +376,155 @@ end
 
 ---
 
+## PWA Session Management
+
+> Native-like auth experience: login once, stay logged in until manual logout.
+
+For comprehensive PWA authentication patterns including offline handling and re-authentication UX, see [pwa-auth.md](./pwa-auth.md).
+
+### Session Lifecycle (Sliding Window)
+
+```
+LOGIN → 30-day session → Active usage → Check remaining time
+                                             |
+                                    < 7 days remaining?
+                                             |
+                                      YES → Extend to new 30 days
+                                      NO  → Keep current expiry
+```
+
+**Rationale**:
+- Active users stay logged in indefinitely (native-like)
+- Inactive users (30+ days) are logged out (security)
+- Avoids constant DB updates on every request (performance)
+
+### Session Extension Pattern
+
+```elixir
+defmodule MyAppWeb.Plugs.SessionExtension do
+  @extension_threshold_days 7
+  @session_duration_days 30
+
+  import Plug.Conn
+
+  def init(opts), do: opts
+
+  def call(conn, _opts) do
+    with token when not is_nil(token) <- get_session(conn, :session_token),
+         {:ok, session} <- MyApp.Accounts.get_session_by_token(token),
+         true <- should_extend?(session) do
+      extend_session(conn, session)
+    else
+      _ -> conn
+    end
+  end
+
+  defp should_extend?(%{expires_at: expires_at}) do
+    days_remaining = DateTime.diff(expires_at, DateTime.utc_now(), :day)
+    days_remaining < @extension_threshold_days
+  end
+
+  defp extend_session(conn, session) do
+    new_expiry = DateTime.add(DateTime.utc_now(), @session_duration_days, :day)
+
+    # Update database session
+    MyApp.Accounts.extend_session(session, new_expiry)
+
+    # Update cookie max_age
+    configure_session(conn, max_age: @session_duration_days * 24 * 60 * 60)
+  end
+end
+```
+
+### Cookie Configuration (PWA-Optimized)
+
+```elixir
+# config/config.exs
+config :my_app, MyAppWeb.Endpoint,
+  session_cookie: [
+    key: "_my_app_session",
+    signing_salt: "...",           # Generate with: mix phx.gen.secret
+    encryption_salt: "...",        # Encrypt session data
+    same_site: "Lax",              # CSRF protection
+    secure: true,                  # HTTPS only
+    http_only: true,               # No JS access (CRITICAL for security)
+    max_age: 60 * 60 * 24 * 30,    # 30 days - aligns with DB session expiry
+    extra: "Partitioned"           # For third-party context (embedded PWAs)
+  ]
+```
+
+### Multi-Device Support
+
+Database sessions enable "logout all devices":
+
+```elixir
+# Logout current session only
+def logout(session_token) do
+  Session
+  |> Ash.Query.filter(token == ^session_token)
+  |> Ash.bulk_destroy(:logout)
+end
+
+# Logout all other devices (keep current)
+def logout_other_devices(user_id, current_token) do
+  Session
+  |> Ash.Query.filter(user_id == ^user_id and token != ^current_token)
+  |> Ash.bulk_destroy(:logout)
+end
+
+# Logout all devices (including current)
+def logout_all_devices(user_id) do
+  Session
+  |> Ash.Query.filter(user_id == ^user_id)
+  |> Ash.bulk_destroy(:logout)
+end
+```
+
+### Returning Session Expiry to Frontend
+
+For PWA offline handling, include session expiry in login response:
+
+```elixir
+# In LoginLive handle_event
+def handle_event("login", %{"email" => email, "password" => password}, socket) do
+  case MyApp.Accounts.authenticate(email, password) do
+    {:ok, user} ->
+      {:ok, session} = MyApp.Accounts.create_session(user)
+
+      # Calculate expiry timestamp for frontend
+      expiry_timestamp = DateTime.to_unix(session.expires_at, :millisecond)
+
+      socket
+      |> put_session(:session_token, session.token)
+      |> push_event("auth:session_created", %{
+        user: %{id: user.id, name: user.name, email: user.email},
+        expires_at: expiry_timestamp
+      })
+      |> push_navigate(to: ~p"/dashboard")
+      |> then(&{:noreply, &1})
+
+    {:error, :invalid_credentials} ->
+      {:noreply, assign(socket, error: "Wrong email or password")}
+  end
+end
+```
+
+### PWA Security Checklist
+
+In addition to the standard security checklist above:
+
+- [ ] Session token NEVER stored in localStorage (HttpOnly cookie only)
+- [ ] Only session expiry timestamp cached in localStorage
+- [ ] Sliding window session extension implemented
+- [ ] "Logout all devices" functionality available
+- [ ] Re-authentication uses inline modal (not redirect) for PWA context preservation
+
+---
+
 ## Related Docs
 
+- [pwa-auth.md](./pwa-auth.md) - PWA-specific auth patterns (offline, re-auth UX)
 - [backend-ash.md](../_guides/backend-ash.md) - Ash resources
 - [errors.md](./errors.md) - Error handling
+- [offline.md](./offline.md) - Offline queue patterns
 
