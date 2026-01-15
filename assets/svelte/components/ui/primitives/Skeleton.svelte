@@ -5,7 +5,8 @@
    *
    * @prop {'text' | 'circle' | 'rect' | 'card' | 'avatar' | 'button'} [variant='text']
    * @prop {'sm' | 'md' | 'lg'} [size='md']
-   * @prop {boolean} [animate=true] - Pulse animation
+   * @prop {boolean} [animate=true] - Enable animation
+   * @prop {boolean} [shimmer=false] - Use shimmer instead of pulse animation
    * @prop {number} [lines=1] - For text variant
    * @prop {string} [width] - Custom width
    * @prop {string} [height] - Custom height
@@ -18,6 +19,7 @@
     variant = 'text',
     size = 'md',
     animate = true,
+    shimmer = false,
     lines = 1,
     width = '',
     height = '',
@@ -26,15 +28,21 @@
 
   const baseVariants = cva('bg-muted', {
     variants: {
-      animate: {
-        true: 'animate-pulse',
-        false: '',
+      animation: {
+        pulse: 'animate-pulse',
+        shimmer: 'animate-shimmer',
+        none: '',
       },
     },
     defaultVariants: {
-      animate: true,
+      animation: 'pulse',
     },
   });
+
+  // Determine animation type
+  const animationType = $derived(
+    !animate ? 'none' : shimmer ? 'shimmer' : 'pulse'
+  );
 
   // Text skeleton heights
   const textHeights = {
@@ -64,7 +72,7 @@
     lg: 'h-48',
   };
 
-  const base = $derived(baseVariants({ animate }));
+  const base = $derived(baseVariants({ animation: animationType }));
 </script>
 
 <!-- eslint-disable svelte/no-inline-styles -- Dynamic width/height required for skeleton sizing -->

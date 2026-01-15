@@ -1,0 +1,191 @@
+/*
+ * MAIN CSS ENTRY POINT
+ * ====================
+ * Import this file in your Phoenix application.
+ * Loads Tailwind CSS, design tokens, and custom utilities.
+ *
+ * AI INSTRUCTIONS:
+ * - Do not add component-specific styles here
+ * - Use design tokens from tokens.css, never hardcode values
+ * - Add global utilities at the end of this file
+ * - Keep this file minimal - prefer Tailwind utilities
+ */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ===========================================================
+   Design Tokens - Visual System
+   =========================================================== */
+@import "./tokens.css";
+
+/* ===========================================================
+   shadcn-svelte Core Tokens
+   These are required by shadcn components
+   =========================================================== */
+
+:root {
+  /* Base shadcn radius */
+  --radius: 0.5rem;  /* 8px - aligns with --radius-lg */
+
+  /* Core color tokens (customize per project) */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.45 0.18 250);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.45 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.9 0 0);
+  --input: oklch(0.9 0 0);
+  --ring: oklch(0.45 0.18 250);
+
+  /* Status colors with soft variants */
+  --success: oklch(0.65 0.2 145);
+  --success-soft: oklch(0.95 0.05 145);
+  --warning: oklch(0.75 0.18 75);
+  --warning-soft: oklch(0.95 0.05 75);
+  --error: oklch(0.577 0.245 27.325);
+  --error-soft: oklch(0.95 0.06 27);
+  --info: oklch(0.6 0.15 250);
+  --info-soft: oklch(0.95 0.04 250);
+
+  /* Sidebar tokens */
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.45 0.18 250);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.9 0 0);
+  --sidebar-ring: oklch(0.45 0.18 250);
+}
+
+/* Dark mode tokens */
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.65 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+
+  /* Dark mode status colors */
+  --success: oklch(0.55 0.18 145);
+  --success-soft: oklch(0.25 0.08 145);
+  --warning: oklch(0.65 0.16 75);
+  --warning-soft: oklch(0.25 0.08 75);
+  --error: oklch(0.5 0.2 27);
+  --error-soft: oklch(0.25 0.1 27);
+  --info: oklch(0.5 0.13 250);
+  --info-soft: oklch(0.25 0.06 250);
+
+  /* Dark sidebar */
+  --sidebar: oklch(0.17 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.985 0 0);
+  --sidebar-primary-foreground: oklch(0.205 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+/* ===========================================================
+   Safe Area Utilities (PWA/Mobile)
+   =========================================================== */
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+
+.pl-safe {
+  padding-left: env(safe-area-inset-left);
+}
+
+.pr-safe {
+  padding-right: env(safe-area-inset-right);
+}
+
+/* ===========================================================
+   Typography Utilities (Pixel-Perfect)
+   =========================================================== */
+
+/* Display text - page titles */
+.text-display {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+/* Heading - section titles */
+.text-heading {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+}
+
+/* Title - card titles */
+.text-title {
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  line-height: var(--leading-snug);
+}
+
+/* Subtitle */
+.text-subtitle {
+  font-size: var(--text-lg);
+  font-weight: var(--font-medium);
+  line-height: var(--leading-normal);
+}
+
+/* Body (default) */
+.text-body {
+  font-size: var(--text-base);
+  font-weight: var(--font-normal);
+  line-height: var(--leading-normal);
+}
+
+/* Caption - helper text */
+.text-caption {
+  font-size: var(--text-sm);
+  font-weight: var(--font-normal);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-normal);
+}
+
+/* Micro - badges, labels */
+.text-micro {
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-wide);
+}

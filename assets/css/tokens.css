@@ -1,0 +1,351 @@
+/*
+ * DESIGN TOKENS - Pixel Perfect Visual System
+ * ============================================
+ * Single source of truth for all visual design values.
+ * Based on 4px baseline grid with Material Design influenced elevation.
+ *
+ * AI INSTRUCTIONS:
+ * - Always use these tokens, never hardcode values
+ * - Use semantic names (--shadow-md not box-shadow: 0 4px 6px...)
+ * - Add new tokens here when needed, don't inline values
+ * - All spacing aligns to 4px grid (space-1 = 4px)
+ * - All component heights use standard scale (32px/40px/48px)
+ *
+ * @see architecture/_guides/visual-design-system.md
+ * @see architecture/_patterns/design-tokens.md
+ */
+
+:root {
+  /* ============================================
+     ELEVATION SYSTEM (Shadow Scale)
+     Material Design inspired 5-level shadow scale
+     ============================================ */
+
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.04);
+
+  /* Semantic elevation levels */
+  --elevation-flat: none;
+  --elevation-raised: var(--shadow-sm);
+  --elevation-overlay: var(--shadow-md);
+  --elevation-modal: var(--shadow-xl);
+
+  /* Card-specific shadows (hover states) */
+  --shadow-card: var(--shadow-sm);
+  --shadow-card-hover: var(--shadow-md);
+
+  /* ============================================
+     TYPOGRAPHY SCALE
+     Pixel-perfect metrics for all type levels
+     ============================================ */
+
+  /* Font sizes (rem for accessibility) */
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+  --text-3xl: 1.875rem;   /* 30px */
+
+  /* Line heights (unitless for scalability) */
+  --leading-none: 1;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+
+  /* Letter spacing */
+  --tracking-tighter: -0.05em;  /* Display text */
+  --tracking-tight: -0.025em;  /* Headings */
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;    /* Micro text */
+
+  /* Font weights */
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  /* ============================================
+     SPACING SCALE (4px Baseline Grid)
+     All vertical rhythm aligns to 4px increments
+     ============================================ */
+
+  --space-px: 1px;
+  --space-0: 0;
+  --space-0-5: 0.125rem;  /* 2px */
+  --space-1: 0.25rem;     /* 4px - base unit */
+  --space-1-5: 0.375rem;  /* 6px */
+  --space-2: 0.5rem;      /* 8px */
+  --space-2-5: 0.625rem;  /* 10px */
+  --space-3: 0.75rem;     /* 12px */
+  --space-3-5: 0.875rem;  /* 14px */
+  --space-4: 1rem;        /* 16px */
+  --space-5: 1.25rem;     /* 20px */
+  --space-6: 1.5rem;      /* 24px */
+  --space-7: 1.75rem;     /* 28px */
+  --space-8: 2rem;        /* 32px */
+  --space-9: 2.25rem;     /* 36px */
+  --space-10: 2.5rem;     /* 40px */
+  --space-11: 2.75rem;    /* 44px - touch target */
+  --space-12: 3rem;       /* 48px */
+  --space-14: 3.5rem;     /* 56px */
+  --space-16: 4rem;       /* 64px */
+
+  /* ============================================
+     COMPONENT DIMENSIONS
+     Consistent heights aligned to spacing scale
+     ============================================ */
+
+  --height-sm: 2rem;      /* 32px */
+  --height-md: 2.5rem;    /* 40px */
+  --height-lg: 3rem;      /* 48px */
+  --height-touch: 2.75rem; /* 44px - minimum touch target */
+
+  /* Border radius scale */
+  --radius-sm: 0.25rem;   /* 4px */
+  --radius-md: 0.375rem;  /* 6px */
+  --radius-lg: 0.5rem;    /* 8px */
+  --radius-xl: 0.75rem;   /* 12px */
+  --radius-2xl: 1rem;     /* 16px */
+  --radius-full: 9999px;  /* Pill/circle */
+
+  /* ============================================
+     ANIMATION TOKENS
+     Durations aligned with motion system
+     ============================================ */
+
+  /* Duration scale */
+  --duration-instant: 0ms;
+  --duration-fast: 100ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  --duration-slower: 400ms;
+
+  /* Micro-interaction specific */
+  --duration-press: 100ms;
+  --duration-hover: 150ms;
+  --duration-focus: 150ms;
+
+  /* Easing functions */
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ============================================
+     INTERACTION FEEDBACK TOKENS
+     Transforms and visual feedback values
+     ============================================ */
+
+  /* Scale transforms */
+  --scale-press: 0.95;
+  --scale-press-sm: 0.90;   /* For icons */
+  --scale-hover-lift: 1.02;
+
+  /* Translate transforms */
+  --lift-hover: -2px;
+  --lift-active: -1px;
+
+  /* Opacity states */
+  --opacity-disabled: 0.5;
+  --opacity-hover: 0.9;
+  --opacity-muted: 0.6;
+
+  /* ============================================
+     STATE COLORS
+     Overlay colors for interactive states
+     ============================================ */
+
+  --state-hover: rgb(0 0 0 / 0.04);
+  --state-active: rgb(0 0 0 / 0.08);
+  --state-focus: rgb(0 0 0 / 0.12);
+  --state-selected: rgb(0 0 0 / 0.08);
+
+  /* ============================================
+     Z-INDEX SCALE
+     Layering system for overlapping elements
+     ============================================ */
+
+  --z-hide: -1;
+  --z-base: 0;
+  --z-raised: 10;
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-popover: 1040;
+  --z-modal-backdrop: 1050;
+  --z-modal: 1060;
+  --z-tooltip: 1070;
+  --z-toast: 1080;
+}
+
+/* Dark mode state overlays */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --state-hover: rgb(255 255 255 / 0.04);
+    --state-active: rgb(255 255 255 / 0.08);
+    --state-focus: rgb(255 255 255 / 0.12);
+    --state-selected: rgb(255 255 255 / 0.08);
+  }
+}
+
+/* ============================================
+   KEYFRAME ANIMATIONS
+   Micro-interactions and feedback effects
+   ============================================ */
+
+/* Error shake animation (validation feedback) */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+/* Loading shimmer effect */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Success pop animation */
+@keyframes success-pop {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Subtle pulse for loading states */
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Fade in animation */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Slide up animation (mobile modals) */
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* Scale in animation (desktop modals) */
+@keyframes scale-in {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ============================================
+   ANIMATION UTILITY CLASSES
+   Apply animations via class names
+   ============================================ */
+
+.animate-shake {
+  animation: shake 0.5s var(--ease-in-out);
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgb(255 255 255 / 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.animate-success-pop {
+  animation: success-pop 0.3s var(--ease-spring);
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s infinite;
+}
+
+.animate-fade-in {
+  animation: fade-in var(--duration-normal) var(--ease-out);
+}
+
+.animate-slide-up {
+  animation: slide-up var(--duration-slow) var(--ease-out);
+}
+
+.animate-scale-in {
+  animation: scale-in var(--duration-normal) var(--ease-out);
+}
+
+/* ============================================
+   REDUCED MOTION SUPPORT
+   Respect user accessibility preferences
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .animate-shake,
+  .animate-shimmer,
+  .animate-success-pop,
+  .animate-pulse-subtle {
+    animation: none !important;
+  }
+}
+
+/* ============================================
+   MICRO-INTERACTION UTILITIES
+   Common interaction patterns as utilities
+   ============================================ */
+
+/* Press feedback for buttons */
+.press-feedback {
+  transition: transform var(--duration-press) var(--ease-out);
+}
+.press-feedback:active {
+  transform: scale(var(--scale-press));
+}
+
+/* Press feedback for icon buttons (smaller scale) */
+.press-feedback-sm {
+  transition: transform var(--duration-press) var(--ease-out);
+}
+.press-feedback-sm:active {
+  transform: scale(var(--scale-press-sm));
+}
+
+/* Hover lift for cards */
+.hover-lift {
+  transition: transform var(--duration-hover) var(--ease-out),
+              box-shadow var(--duration-hover) var(--ease-out);
+}
+.hover-lift:hover {
+  transform: translateY(var(--lift-hover));
+  box-shadow: var(--shadow-card-hover);
+}
+.hover-lift:active {
+  transform: translateY(var(--lift-active));
+}
+
+/* Focus ring enhancement */
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}

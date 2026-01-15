@@ -18,6 +18,7 @@
 | Show overlays | [#overlay-components](#overlay-components) |
 | Handle states | [#state-components](#state-components) |
 | **Desktop decisions** | [#mobile-vs-desktop-decisions](#mobile-vs-desktop-decisions) |
+| **Visual polish** | [#visual-polish-decisions](#visual-polish-decisions) |
 
 **Complements:**
 - [ux-design-philosophy.md](./ux-design-philosophy.md) - WHY behind decisions
@@ -642,11 +643,57 @@ Showing loading or empty state...
 
 ---
 
+## Visual Polish Decisions
+
+> For comprehensive visual system details, see [visual-design-system.md](./visual-design-system.md).
+
+### Micro-Interaction Decisions
+
+| User Intent | Visual Feedback | Component Feature |
+|-------------|-----------------|-------------------|
+| Press a button | Scale down briefly | `Button` has `active:scale-95` |
+| Press icon button | Scale down (smaller) | `IconButton` has `active:scale-90` |
+| Hover clickable card | Lift and shadow | `Card` with `interactive` prop |
+| Submit form with error | Shake field | `FormField` with `shake` prop |
+| See success confirmation | Pop-in animation | `Alert` with `animate` prop |
+| Wait for content | Pulse or shimmer | `Skeleton` with optional `shimmer` prop |
+
+### Elevation Decisions
+
+| Element Type | Shadow Level | Token |
+|--------------|--------------|-------|
+| Page background | None | flat |
+| Cards, buttons | Subtle | `shadow-sm` |
+| Dropdown menus | Medium | `shadow-md` |
+| Popovers, tooltips | Elevated | `shadow-lg` |
+| Modals, dialogs | High | `shadow-xl` |
+
+### Loading State Decisions
+
+| Load Duration | Use | Pattern |
+|---------------|-----|---------|
+| <1s | Button spinner | `Button` with `loading` prop |
+| 1-3s | Skeleton pulse | `Skeleton` default |
+| 3s+ | Skeleton shimmer | `Skeleton` with `shimmer` prop |
+| Image load | Shimmer placeholder | `Skeleton variant="rect" shimmer` |
+
+### Animation Duration Decisions
+
+| Action Type | Duration | Token |
+|-------------|----------|-------|
+| Button press | 100ms | `--duration-fast` |
+| Hover effects | 150ms | `--duration-hover` |
+| State changes | 200ms | `--duration-normal` |
+| Modal open/close | 300ms | `--duration-slow` |
+
+---
+
 ## Related Docs
 
 - [ux-design-philosophy.md](./ux-design-philosophy.md) - WHY behind decisions
 - [wireframe-patterns.md](./wireframe-patterns.md) - Screen templates
 - [mobile-ux.md](./mobile-ux.md) - Mobile implementation patterns
 - [desktop-ux.md](./desktop-ux.md) - Desktop patterns and layouts
+- [visual-design-system.md](./visual-design-system.md) - Visual polish and design tokens
 - [adaptive-layouts.md](../_patterns/adaptive-layouts.md) - Layout transformations
 - [frontend-svelte.md](./frontend-svelte.md) - Component implementation

@@ -40,7 +40,8 @@
     [
       'inline-flex items-center justify-center',
       'font-medium whitespace-nowrap select-none',
-      'transition-colors duration-150',
+      'transition-all duration-150',
+      'active:scale-95', // Press feedback
       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
       'disabled:pointer-events-none disabled:opacity-50',
     ],

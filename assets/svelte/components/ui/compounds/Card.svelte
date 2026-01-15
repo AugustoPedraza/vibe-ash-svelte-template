@@ -5,6 +5,7 @@
    *
    * @prop {'elevated' | 'outlined' | 'flat'} [variant='outlined']
    * @prop {'sm' | 'md' | 'lg' | 'none'} [padding='md']
+   * @prop {boolean} [interactive=false] - Enable hover lift effect
    * @prop {string} [title] - Optional card title
    * @prop {string} [description] - Optional description
    * @prop {Snippet} [header] - Custom header slot
@@ -12,6 +13,7 @@
    * @prop {Snippet} [actions] - Actions slot
    * @prop {Snippet} [children] - Main content
    * @prop {string} [class] - Additional classes
+   * @prop {() => void} [onclick] - Click handler (for interactive cards)
    */
   import { cva } from 'class-variance-authority';
   import { cn } from '$lib/utils.js';
@@ -19,6 +21,7 @@
   let {
     variant = 'outlined',
     padding = 'md',
+    interactive = false,
     title = '',
     description = '',
     header = undefined,
@@ -26,6 +29,7 @@
     actions = undefined,
     children,
     class: className = '',
+    onclick = undefined,
   } = $props();
 
   const cardVariants = cva('rounded-lg overflow-hidden', {
@@ -35,9 +39,19 @@
         outlined: 'bg-card text-card-foreground border border-border shadow-sm',
         flat: 'bg-muted text-foreground border-0',
       },
+      interactive: {
+        true: [
+          'cursor-pointer',
+          'transition-all duration-150',
+          'hover:shadow-md hover:-translate-y-0.5', // Hover lift
+          'active:translate-y-0 active:shadow-sm',   // Press feedback
+        ],
+        false: '',
+      },
     },
     defaultVariants: {
       variant: 'outlined',
+      interactive: false,
     },
   });
 
@@ -50,7 +64,13 @@
   };
 </script>
 
-<div class={cn(cardVariants({ variant }), className)}>
+<div
+  class={cn(cardVariants({ variant, interactive }), className)}
+  role={interactive ? 'button' : undefined}
+  tabindex={interactive ? 0 : undefined}
+  {onclick}
+  onkeydown={interactive ? (e) => e.key === 'Enter' && onclick?.() : undefined}
+>
   {#if header}
     <div class={cn('border-b border-border', paddings[padding])}>
       {@render header()}

@@ -6,6 +6,7 @@
    * @prop {'error' | 'warning' | 'success' | 'info'} [variant='info'] - Alert type
    * @prop {string} [title] - Optional title for the alert
    * @prop {boolean} [dismissible=false] - Whether alert can be dismissed
+   * @prop {boolean} [animate=false] - Enable success-pop animation on mount
    * @prop {string} [class] - Additional classes
    */
   import { cn } from '$lib/utils.js';
@@ -17,6 +18,7 @@
     variant?: Variant;
     title?: string;
     dismissible?: boolean;
+    animate?: boolean;
     class?: string;
     ondismiss?: () => void;
     children?: import('svelte').Snippet;
@@ -26,6 +28,7 @@
     variant = 'info',
     title,
     dismissible = false,
+    animate = false,
     class: className = '',
     ondismiss,
     children,
@@ -60,6 +63,7 @@
     class={cn(
       'flex items-start gap-3 p-3 border rounded-lg text-sm',
       variantStyles[variant],
+      animate && 'animate-success-pop',
       className
     )}
     role="alert"
